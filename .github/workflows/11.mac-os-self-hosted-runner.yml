@@ -1,0 +1,15 @@
+---
+name: '11.mac-os-self-hosted-runner'
+on: workflow_dispatch
+jobs:
+  hello-macos-self-hosted-runner:
+    runs-on:
+      - self-hosted
+      - macOS
+      - X64
+    steps:
+      - name: run-me-inside-macos-self-hosted-runner
+        run: echo "Howdy GitHub Actions. I know I am getting executed inside self hosted
+          runner."
+      - name: sleep for 100 seconds
+        run: sleep 100
