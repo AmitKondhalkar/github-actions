@@ -1,13 +1,9 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: '13.python-app'
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: workflow_dispatch
 
 permissions:
   contents: read
@@ -19,7 +15,7 @@ jobs:
     permissions:
       checks: write
     env: 
-      working-directory: ./node-app
+      working-directory: ./python-app
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
