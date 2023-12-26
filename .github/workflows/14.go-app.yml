@@ -5,16 +5,16 @@ name: '14.go-app'
 
 env:
   GIN_MODE: release
-  working-directory: ./go-app
 
 on: workflow_dispatch
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     permissions:
       checks: write
+    env:
+      working-directory: ./go-app
 
     steps:
     - uses: actions/checkout@v3
@@ -22,8 +22,9 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version-file: 'go.mod'
+        go-version-file: '${{ env.working-directory }}/go.mod'
         cache: true
+        cache-dependency-path:  '${{ env.working-directory }}/go.sum'
 
     - name: Revive Action
       uses: morphy2k/revive-action@v2.4.1
