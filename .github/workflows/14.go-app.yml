@@ -28,9 +28,13 @@ jobs:
 
     - name: Revive Action
       uses: morphy2k/revive-action@v2.4.1
+      with:
+        path: ${{ env.working-directory }}
 
     - name: Staticcheck
       uses: dominikh/staticcheck-action@v1.3.0
+      with:
+        working-directory: ${{ env.working-directory }}
 
     - name: Build
       working-directory: ${{ env.working-directory }}
