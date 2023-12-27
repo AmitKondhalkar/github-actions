@@ -8,7 +8,7 @@ RUN apk add --no-cache tini
 ENV TINI_SUBREAPER=1
 
 # Set the working directory to /workspace
-WORKDIR /workspace/python-app
+WORKDIR python-app
 
 # Copy the project files into the container at /workspace
 COPY requirements.txt \
