@@ -14,8 +14,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
     env: 
         working-directory: ./aws-deploy
       
