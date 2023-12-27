@@ -8,13 +8,13 @@ RUN apk add --no-cache tini
 ENV TINI_SUBREAPER=1
 
 # Set the working directory to /workspace
-WORKDIR python-app
+WORKDIR /workspace/python-app/
 
 # Copy the project files into the container at /workspace
-COPY requirements.txt \
-     main.py \
-     main_test.py \
-     data.json .
+COPY /python-app/requirements.txt \
+     /python-app/main.py \
+     /python-app/main_test.py \
+     /python-app/data.json .
 
 # Install the requirements
 RUN pip install --no-cache-dir --requirement requirements.txt
