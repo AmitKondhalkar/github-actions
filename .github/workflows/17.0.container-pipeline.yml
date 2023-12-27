@@ -1,0 +1,80 @@
+
+###########################################################
+# Go to Identity and Access Management (IAM)
+# Copy Account id 332321087422
+
+# Users -> Create user
+# 	Attach policies directly - 
+# 		AmazonEC2ContainerRegistryFullAccess
+# 		AmazonEC2FullAccess
+# 		AmazonS3FullAccess
+# 		AWSAppRunnerFullAccess
+
+# Get User credentials 
+# Select user ->Security Credentials -> Create Access Key
+# 		Application running outside AWS
+# 		AWS_ACCOUNT_NUMBER - 332321087422
+# 		AWS_ACCESS_KEY_ID - AKIAU2X7BL67J3PDF7HC
+# 		AWS_SECRET_ACCESS_KEY - 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
+
+# Add the credentials in Github
+# 	Settings -> Secrets and Variables -> New repository secret ->
+# 		AWS_ACCOUNT_NUMBER - 332321087422
+# 		AWS_ACCESS_KEY_ID - AKIAU2X7BL67J3PDF7HC
+# 		AWS_SECRET_ACCESS_KEY - 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
+
+###########################################################
+
+name: "17.0.container-pipeline"
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  # push:
+  #   branches: [ "main" ]
+  #   # Publish semver tags as releases.
+  #   tags: [ 'v*.*.*' ]
+  # pull_request:
+  #   branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  integration:
+    uses: ./.github/workflows/17.1.integrate-python-app.yml
+    permissions:
+      contents: read
+
+  delivery:
+    needs: [integration]
+    uses: ./.github/workflows/17.2.deliver-container-image.yml
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+  deploy-staging:
+    needs: [delivery]
+    uses: ./.github/workflows/17.3.deploy-aws-app-runner.yml
+    with:
+      environment: Staging
+    permissions:
+      packages: read
+    secrets: inherit
+
+  deploy-production:
+    needs: [deploy-staging]
+    uses: ./.github/workflows/17.3.deploy-aws-app-runner.yml
+    with:
+      environment: Production
+    permissions:
+      packages: read
+    secrets: inherit
