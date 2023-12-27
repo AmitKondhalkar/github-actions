@@ -3,7 +3,9 @@
 
 name: '13.python-app'
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -43,6 +45,6 @@ jobs:
       uses: mikepenz/action-junit-report@v3
       if: success() || failure() # always run even if the previous step fails
       with:
-        report_paths: ' ${{ env.working-directory }}/**/junit.xml'
+        report_paths: '${{ env.working-directory }}/**/junit.xml'
         detailed_summary: true
         include_passed: true
